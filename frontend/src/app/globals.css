@@ -1,0 +1,219 @@
+@import "tailwindcss";
+@import "@fontsource/noto-serif-sc/chinese-simplified-400.css";
+@import "@fontsource/noto-serif-sc/chinese-simplified-500.css";
+@import "@fontsource/noto-serif-sc/chinese-simplified-700.css";
+@import "@fontsource/noto-sans-sc/chinese-simplified-400.css";
+@import "@fontsource/noto-sans-sc/chinese-simplified-500.css";
+@import "@fontsource/noto-sans-sc/chinese-simplified-700.css";
+@import "@fontsource/lxgw-wenkai-tc/chinese-traditional-400.css";
+@import "@fontsource/lxgw-wenkai-tc/chinese-traditional-700.css";
+@import "@fontsource/ma-shan-zheng/chinese-simplified-400.css";
+@import "@fontsource/zcool-xiaowei/chinese-simplified-400.css";
+@import "@fontsource/zcool-qingke-huangyou/chinese-simplified-400.css";
+@import "@fontsource/inter/400.css";
+@import "@fontsource/inter/500.css";
+@import "@fontsource/inter/600.css";
+@import "@fontsource/inter/700.css";
+@import "@fontsource/source-serif-pro/400.css";
+@import "@fontsource/source-serif-pro/600.css";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --foreground-rgb: 255, 255, 255;
+  --background-start-rgb: 17, 24, 39;
+  --background-end-rgb: 0, 0, 0;
+}
+
+body {
+  color: rgb(var(--foreground-rgb));
+  min-height: 100vh;
+  background: linear-gradient(
+    to bottom,
+    rgb(var(--background-start-rgb)),
+    rgb(var(--background-end-rgb))
+  );
+  font-family: Arial, Helvetica, sans-serif;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #0a0a0a;
+    --foreground: #ededed;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-gray-700;
+  }
+}
+
+@layer utilities {
+  .text-gradient {
+    @apply bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-600;
+  }
+  
+  /* 混合字体 - 英文和中文协调 */
+  .mixed-font {
+    font-family: "Inter", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "Helvetica Neue", Arial, sans-serif;
+    font-weight: 600;
+    letter-spacing: -0.01em;
+  }
+
+  /* 品牌标题字体 - 优化的中文字体 */
+  .brand-font {
+    font-family: "LXGW WenKai TC", "Noto Serif SC", "Source Han Serif SC", "思源宋体", "宋体", "SimSun", serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 现代品牌字体 - 无衬线版本 */
+  .brand-font-modern {
+    font-family: "Noto Sans SC", "Source Han Sans SC", "思源黑体", "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", "黑体", "SimHei", sans-serif;
+    font-weight: 700;
+    letter-spacing: 0.08em;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 特色品牌字体 - 站酷小薇 */
+  .brand-font-special {
+    font-family: "ZCOOL XiaoWei", "Ma Shan Zheng", "ZCOOL QingKe HuangYou", "LXGW WenKai TC", "Noto Serif SC", serif;
+    font-weight: 400;
+    letter-spacing: 0.1em;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    text-shadow: 0 0 1px rgba(255, 255, 255, 0.1);
+  }
+
+  /* 优雅品牌字体 - 混合中英文 */
+  .brand-font-elegant {
+    font-family: "Noto Sans SC", "Inter", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Microsoft YaHei", "WenQuanYi Micro Hei", sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.02em;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 精致品牌字体 - 衬线风格 */
+  .brand-font-refined {
+    font-family: "Source Serif Pro", "Noto Serif SC", "Source Han Serif SC", "思源宋体", "Georgia", "Times New Roman", serif;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    font-feature-settings: "kern" 1, "liga" 1, "calt" 1, "onum" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+
+  /* 统一品牌字体 - 专为品牌标题设计 */
+  .brand-font-unified {
+    font-family: "Noto Sans SC", "PingFang SC", "Hiragino Sans GB", "Source Han Sans SC", "Microsoft YaHei", "WenQuanYi Micro Hei", "Inter", sans-serif;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+    font-feature-settings: "kern" 1;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    font-variant-numeric: proportional-nums;
+  }
+}
+
+/* 添加平滑滚动效果 */
+html {
+  scroll-behavior: smooth;
+}
+
+/* 自定义滚动条样式 */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #0d0d0d; /* gray-700 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #3c4048; /* gray-500 */
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #696d75; /* gray-400 */
+}
+
+/* Firefox 滚动条样式 */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: #707174 #1f252f;
+}
+
+/* 全局选中文本高亮色 */
+html ::selection,
+body ::selection,
+div ::selection,
+span ::selection {
+  background: #2563eb !important;
+  color: #fff !important;
+}
+
+/* 现代化按钮动画效果 */
+@keyframes shimmer-slide {
+  0% { transform: translateX(-100%) skewX(-12deg); }
+  100% { transform: translateX(200%) skewX(-12deg); }
+}
+
+@keyframes rainbow {
+  0% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+  100% { background-position: 0% 50%; }
+}
+
+@keyframes ripple {
+  0% { transform: scale(0); opacity: 0.6; }
+  100% { transform: scale(2); opacity: 0; }
+}
+
+@keyframes glow {
+  0%, 100% { box-shadow: 0 0 5px rgba(59, 130, 246, 0.5); }
+  50% { box-shadow: 0 0 20px rgba(59, 130, 246, 0.8); }
+}
+
+.animate-shimmer-slide {
+  animation: shimmer-slide 1.5s ease-in-out infinite;
+}
+
+.animate-rainbow {
+  animation: rainbow 3s ease-in-out infinite;
+}
+
+.animate-ripple {
+  animation: ripple 0.6s ease-out forwards;
+}
+
+.animate-glow {
+  animation: glow 2s ease-in-out infinite alternate;
+}
+
