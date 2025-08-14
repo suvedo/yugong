@@ -1,3 +1,5 @@
+source .env_var
+
 # 构建生产环境代码（生产模式）
 echo "Building production code..."
 npm run build

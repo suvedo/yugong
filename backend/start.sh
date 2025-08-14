@@ -1,5 +1,10 @@
 #!/bin/bash
 
+# 确保脚本在 bash 下运行（即使被 sh 调用）
+if [ -z "$BASH_VERSION" ]; then
+    exec bash "$0" "$@"
+fi
+
 # 检测端口是否可用的函数（支持多系统）
 check_port() {
     local port=$1
@@ -18,7 +23,8 @@ check_port() {
     
     # 根据操作系统选择端口检测命令
     get_port_check_command() {
-        local os=$(detect_os)
+        # local os=$(detect_os)
+        local os="$(detect_os)"
         case $os in
             "macos")
                 echo "lsof -i :$1 > /dev/null 2>&1"
@@ -44,10 +50,12 @@ check_port() {
         esac
     }
     
-    local check_cmd=$(get_port_check_command $port)
+    # local check_cmd=$(get_port_check_command $port)
+    local check_cmd="$(get_port_check_command "$port")"
     
     while [ $attempt -le $max_attempts ]; do
-        if eval $check_cmd; then
+        # if eval $check_cmd; then
+        if eval "$check_cmd"; then
             return 0
         else
             # echo "⏳ attempt $attempt/$max_attempts: port $port not started, keep waiting..."
@@ -68,7 +76,7 @@ fi
 # 启动后端服务
 echo "starting backend service..."
 
-source ~/.bashrc
+source .env_var
 source .venv/bin/activate
 
 # 启动服务

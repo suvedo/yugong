@@ -154,7 +154,9 @@ export default function ChatPage() {
 
     setMessages(prev => [...prev, { role: 'user', content: msg, contentType: 'text' }]);
 
-    const ws = new window.WebSocket('ws://127.0.0.1:5001/agent-space/agent_space_chat_stream');
+    const wsScheme = window.location.protocol === 'https:' ? 'wss' : 'ws';
+    const wsHost = process.env.NEXT_PUBLIC_WS_HOST || (process.env.NODE_ENV === 'production' ? 'api.yugong.org' : '127.0.0.1:5001');
+    const ws = new window.WebSocket(`${wsScheme}://${wsHost}/agent-space/agent_space_chat_stream`);
     wsRef.current = ws;
     const req_uuid: string = uuidv4();
 

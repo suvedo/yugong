@@ -1,5 +1,7 @@
 #!/bin/bash
 
+source ~/.bashrc
+
 # 检查是否已经在运行
 if [ -f "./tmp/next.pid" ]; then
     echo "Next.js seem to be running. Please run restart.sh"
