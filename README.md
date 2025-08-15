@@ -1,31 +1,31 @@
-# yugong (English Version)
+# yugong
 
 <div align="center">
-  <a href="README.md" style="padding: 8px 16px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Switch to Chinese Version</a>
+  <a href="README_CN.md" style="padding: 8px 16px; background-color: #4CAF50; color: white; text-decoration: none; border-radius: 4px;">Switch to Chinese Version</a>
 </div>
 
 ---
 
 ## Project Introduction
 
-yugong is an open source AI agent platform based on Google A2A (Agent-to-Agent) protocol. This platform allows users to register, discover and use various AI agents to implement intelligent task processing and service integration.
+yugong is an open source AI agent platform based on Google A2A (Agent-to-Agent) protocol. This platform allows enterprise users to deploy a highly scalable, easy-to-use, and powerful conversational application platform within their organizations. Additionally, the community has deployed a (Chinese version) platform ([click to visit](https://yugong.org/)), where enterprises can register their A2A agent services, and individual users can easily use enterprise agents through the platform's scheduling system.
 
 ## Project Features
 
-1. **Agent Registration and Discovery**: Support AI agent registration and semantic search discovery based on A2A protocol
-2. **Multi-Agent Collaboration**: Enable collaboration between multiple AI agents
-3. **Image Generation Agent**: Provide image generation function based on text description
-4. **Web Interface**: Intuitive user interface for managing and using AI agents
-5. **Scalability**: Easy to add new AI agents and features
+1. **[Agent Registration and Sharing](https://yugong.org/agent-space-share)**: Support AI agent registration based on A2A protocol, driving traffic to enterprise agent websites
+2. **[Simple and Direct Agent Conversation](https://yugong.org/)**: No need to care about or specify agents; the platform will automatically match and call the best agent to complete tasks based on user needs
+3. **[Agent Search and Discovery](https://yugong.org/agent-space-discover)**: Users can search or discover needed agents and initiate conversations with them
+4. **Unified and Concise Human-Computer Interaction Interface**: Integrating common agent interaction interfaces on the market, providing a unified user interaction, and offering flexible developer-customizable interaction components in agent responses (including page jumping)
+5. **Highly Scalable/Low Coupling Agent Ecosystem**: A2A agents can be independently developed and connected to the platform through registration, enriching platform capabilities and achieving a highly scalable/low coupling agent development ecosystem
 
 ## Project Structure
 
 ```
 yugong/
-├── agents/
-│   └── image-gen-a2a-server/  # Image generation A2A server
+├── agents/ # Various A2A agents
+│   └── image-gen-a2a-server/  # Image generation A2A agent (example)
 ├── backend/  # Backend services
-│   ├── agent_space/  # Agent space related code
+│   ├── agent_space/  # Agent registration, scheduling, search code
 │   ├── database/  # Database operations
 │   ├── embedding/  # Embedding functions
 │   ├── rank/  # Ranking functions
@@ -35,27 +35,22 @@ yugong/
     └── src/  # Source code
 ```
 
-## Service Startup Guide
-
-### 1. Backend Service Startup
-
+## Platform Deployment Steps
+### 0. Clone the Project
 ```bash
-cd backend
-./start.sh
+git clone git@github.com:suvedo/yugong.git
+cd yugong
 ```
-
-- The backend service runs on port 5001 by default
-- Depends on Python environment and related packages, you can prepare the environment with `prepare_env.sh` script
-- Checks if the port is occupied before starting
-- Startup logs are saved in the `nohup.out` file
-
-### 2. Agents Service Startup
+### 1. Agents Service Startup
 
 Take the image generation agent as an example:
 
 ```bash
 cd agents/image-gen-a2a-server
-./start.sh
+sh prepare_env.sh # Set up runtime environment
+sh start.sh # Start service
+sh stop.sh  # Stop service
+sh restart.sh # Restart service
 ```
 
 - The image generation agent runs on port 10000 by default
@@ -63,46 +58,48 @@ cd agents/image-gen-a2a-server
 - Checks if the port is occupied before starting
 - Startup logs are saved in the `nohup.out` file
 
+### 2. Backend Service Startup
+
+```bash
+cd backend
+sh prepare_env.sh # Set up runtime environment
+sh start.sh # Start service
+sh stop.sh  # Stop service
+sh restart.sh # Restart service
+```
+
+- The backend service runs on port 5001 by default
+- Depends on Python environment and related packages, set up via `prepare_env.sh` script
+- Checks if the port is occupied before starting
+- Startup logs are saved in the `nohup.out` file
+
 ### 3. Frontend Service Startup
 
 ```bash
 cd frontend
-./start.sh
+sh prepare_env.sh # Set up runtime environment
+sh start.sh # Start service
+sh stop.sh  # Stop service
+sh restart.sh # Restart service
 ```
 
 - The frontend service runs on port 3030 by default
 - Built with Next.js framework
-- Supports development and production modes
+- Defaults to production mode
 - Startup logs are saved in the `./tmp/next.log` file
 
 ## Usage for Enterprise Users
 
 1. **Deploy the Project**:
-   - Deploy backend, agents and frontend services on enterprise servers
+   - Deploy the platform (backend, agents, and frontend services) on enterprise internal servers
    - Configure database and environment variables according to enterprise needs
 
-2. **Integrate with Enterprise Systems**:
-   - Use the provided API interfaces to integrate the yugong platform into existing enterprise systems
-   - Customize agent registration and discovery mechanisms
+2. **Registration and Traffic Generation**:
+   - Register your A2A agent services on [yugong Community](https://yugong.org/agent-space-share)
+   - Use the community's [unified conversation frontend](https://yugong.org/) to drive traffic to enterprise websites
 
-3. **Manage Access Permissions**:
-   - Configure user authentication and authorization mechanisms
-   - Set up different levels of access permissions
+## Usage for Regular Users (Non-Developers)
 
-4. **Develop Custom Agents**:
-   - Develop custom AI agents according to enterprise business needs
-   - Implement agent interfaces according to A2A protocol specifications
-
-## Usage for Individual Users
-
-1. **Local Deployment**:
-   - Start all services according to the service startup guide
-   - Access http://localhost:3030 to use the frontend interface
-
-2. **Use Existing Agents**:
-   - Browse and search for available AI agents in the frontend interface
-   - Select suitable agents and submit tasks
-
-3. **Register Custom Agents**:
-   - Develop AI agents that comply with the A2A protocol
-   - Register agents through API or frontend interface
+1. **Use Registered Agents**:
+   - No need to care about or specify agents; just clearly describe your needs to call the best agent to get the answers you want
+   - Obtain needed agents on the [discovery page](https://yugong.org/agent-space-discover) and initiate directed conversations
