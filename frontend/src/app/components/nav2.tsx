@@ -74,6 +74,8 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
                   src="/yu_logo.jpg" 
                   alt="愚公社区Logo" 
                   className="w-5.5 h-5.5 rounded-full object-cover"
+                  width={5.5}
+                  height={5.5}
                 />
                 {/* <h1 className="mixed-font text-gray-300 text-sm font-bold hover:bg-gray-600/30 hover:text-white"> */}
                 <h1 className="mixed-font text-gray-300 text-sm font-bold">
