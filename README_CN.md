@@ -1,22 +1,22 @@
 # yugong
 
 <div align="center">
-  <a href="README.md" style="padding: 8px 16px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px;">切换到英文版本</a>
+  <a href="README.md" style="padding: 8px 16px; background-color: #2196F3; color: white; text-decoration: none; border-radius: 4px;">switch to English version</a>
 </div>
 
 ---
 
 ## 项目简介
 
-yugong 是一个基于 Google A2A (Agent-to-Agent) 协议的开源 AI 智能体平台项目。该项目允许企业用户在企业内部部署扩展性强、简单易用、功能强大的对话应用平台。此外，本社区已部署好一个(中文版)平台([点击跳转](https://yugong.org/))，企业可将自己开发的A2A智能体服务注册至该平台，个人用户可基于该平台的调度系统简单轻松地使用企业智能体。
+yugong 是一个基于 Google A2A (Agent-to-Agent) 协议的开源 AI 智能体互联项目。该项目允许企业用户在企业内部部署扩展性强、简单易用、功能强大的智能体互联网络和对话应用。此外，本社区已部署好一个(中文版)智能体互联网络([点击跳转](https://yugong.org/))，企业可将自己开发的A2A智能体服务注册至该网络，个人用户可基于该网络的调度系统简单轻松地使用企业智能体。
 
 ## 项目功能介绍
 
 1. **[智能体注册与分享](https://yugong.org/agent-space-share)**：支持基于 A2A 协议的 AI 智能体注册，为企业智能体网站引流
-2. **[简单直接的智能体对话](https://yugong.org/)**：无需关心和指定智能体，平台会根据用户任务自动匹配并调用最佳智能体完成任务
+2. **[简单直接的智能体对话](https://yugong.org/)**：无需关心和指定智能体，系统会根据用户任务自动匹配并调用最佳智能体完成任务
 3. **[智能体搜索与发现](https://yugong.org/agent-space-discover)**：用户可搜索或发现需要的智能体，并与该智能体发起对话
 4. **统一简洁的人机交互界面**：综合市面上常见的智能体交互界面，提供统一的用户交互，并在智能体回答内容中提供灵活的开发者可自定义的交互组件（包括页面跳转引流等）
-5. **高扩展/低耦合的智能体生态**：可独立开发 A2A 智能体，通过注册功能接入平台，丰富平台能力，实现高扩展/低耦合的智能体开发生态
+5. **高扩展/低耦合的智能体生态**：可独立开发 A2A 智能体，通过注册功能接入智能体互联网络，丰富网络能力，实现高扩展/低耦合的智能体生态
 
 ## 项目结构介绍
 
@@ -35,7 +35,7 @@ yugong/
     └── src/  # 源代码
 ```
 
-## 平台部署步骤
+## 项目部署步骤
 ### 0. 克隆项目
 ```bash
 git clone git@github.com:suvedo/yugong.git
@@ -91,7 +91,7 @@ sh restart.sh # 重启服务器
 ## 企业用户使用该项目的方法
 
 1. **部署项目**：
-   - 在企业内部服务器上部署该平台（后端、agents 和前端服务）
+   - 在企业内部服务器上部署该项目（后端、agents 和前端服务）
    - 根据企业需求配置数据库和环境变量
 
 2. **注册引流**：
