@@ -10,9 +10,9 @@ import { LanguageProvider } from "./components/LanguageContext";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
-  title: "愚公开源社区 - AI Agent注册搜索对话平台",
-  description: "企业注册A2A Agent Server，为自身Agent服务引流，为用户打造简单易用且强大的多智能体对话平台",
-  keywords: "AI, agent, A2A Protocol, 多智能体平台, chatbot",
+  title: "Yugong Community - An Open-source AI Agent Interconnection Platform",
+  description: "Register A2A Agent Server, drain traffic for your own agent service, and create a simple and powerful multi-agent conversation platform for users",
+  keywords: "AI, agent, A2A Protocol, multi-agent platform, chatbot",
 };
 
 export default function RootLayout({

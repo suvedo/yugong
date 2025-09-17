@@ -50,6 +50,8 @@ function HomeContent() {
   const [isCancelling, setIsCancelling] = useState(false);
   // WebSocket连接引用
   const wsRef = useRef<WebSocket | null>(null);
+  
+  const { t } = useLanguage();
 
   // 新建会话
   const handleNewChat = () => {
