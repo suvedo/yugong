@@ -7,6 +7,7 @@ import Link from 'next/link';
 import Image from 'next/image'
 
 import { useAuth } from './AuthContext';
+import { useLanguage } from './LanguageContext';
 
 interface Navbar2Props {
   currentPage?: 'share' | 'discover' | 'explore' | 'mine';
@@ -15,6 +16,7 @@ interface Navbar2Props {
 
 export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
   const { userId, logout, openLogin, isLoading } = useAuth();
+  const { language, toggleLanguage, t } = useLanguage();
   const [userMenuOpen, setUserMenuOpen] = React.useState(false);
   const userMenuRef = React.useRef<HTMLDivElement>(null);
   const maskedUserId = React.useMemo(() => {
@@ -79,7 +81,7 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
                 />
                 {/* <h1 className="mixed-font text-gray-300 text-sm font-bold hover:bg-gray-600/30 hover:text-white"> */}
                 <h1 className="mixed-font text-gray-300 text-sm font-bold">
-                  愚公社区
+                  {t('nav_brand')}
                 </h1>
               </Link>
             </div>
@@ -98,7 +100,7 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
                >
                  <div className="relative z-10 flex items-center gap-1">
                    <MessageCircle className="w-3 h-3" />
-                   <span>探索</span>
+                   <span>{t('nav_explore')}</span>
                  </div>
                </motion.button>
                 <motion.button 
@@ -113,7 +115,7 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
               >
                 <div className="relative z-10 flex items-center gap-1">
                   <Share2 className="w-3 h-3" />
-                  <span>分享</span>
+                  <span>{t('nav_share')}</span>
                 </div>
               </motion.button>
 
@@ -129,7 +131,7 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
                >
                  <div className="relative z-10 flex items-center gap-1">
                    <Search className="w-3 h-3" />
-                   <span>发现</span>
+                   <span>{t('nav_discover')}</span>
                  </div>
                </motion.button>
 
@@ -145,7 +147,7 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
                >
                  <div className="relative z-10 flex items-center gap-1">
                    <User className="w-3.5 h-3.5" />
-                   <span>我的</span>
+                   <span>{t('nav_mine')}</span>
                  </div>
                </motion.button>
 
@@ -153,7 +155,15 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
               </div>
             </div>
 
-            <div className="flex items-center pr-4 w-28 justify-end flex-shrink-0">
+            <div className="flex items-center pr-4 justify-end flex-shrink-0 gap-2">
+              <button
+                aria-label="toggle-language"
+                className="mixed-font px-2 py-1 bg-transparent text-gray-300 text-xs font-semibold rounded-md cursor-pointer transition-all duration-300 hover:bg-gray-600/30 hover:text-white"
+                onClick={toggleLanguage}
+                title={language === 'en' ? '中文' : 'English'}
+              >
+                {language === 'en' ? 'EN' : '中'}
+              </button>
               {isLoading ? (
                 <div className="w-16 h-6 rounded animate-pulse"></div>
               ) : userId ? (
@@ -185,7 +195,7 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
                           }}
                         >
                           <Bot className="w-4 h-4" />
-                          我的agent
+                          {t('nav_my_agents')}
                         </button>
                         <button
                           className="mixed-font flex items-center gap-1 px-2 py-1 w-32 bg-transparent text-gray-300 text-sm font-semibold rounded-md cursor-pointer transition-all duration-300 hover:bg-gray-600/30 hover:text-white"
@@ -202,14 +212,14 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
                           }}
                         >
                           <Star className="w-4 h-4" />
-                          我的收藏
+                          {t('nav_favorites')}
                         </button>
                         <button
                           className="mixed-font flex items-center gap-1 px-2 py-1 w-32 bg-transparent text-gray-300 text-sm font-semibold rounded-md cursor-pointer transition-all duration-300 hover:bg-gray-600/30 hover:text-white"
                           onClick={() => { logout(); setUserMenuOpen(false); }}
                         >
                           <LogOut className="w-4 h-4" />
-                          退出登录
+                          {t('nav_logout')}
                         </button>
                       </div>
                     )}
@@ -217,11 +227,11 @@ export default function Navbar2({ currentPage = 'share' }: Navbar2Props) {
                 </>
               ) : (
                 <button 
-                  className="mixed-font flex items-center gap-1 px-2 py-1 bg-transparent text-gray-300 text-sm font-semibold rounded-md cursor-pointer transition-all duration-300 hover:bg-gray-600/30 hover:text-white"
+                  className="mixed-font flex items-center justify-center gap-1 px-3 py-1 bg-transparent text-gray-300 text-sm font-semibold rounded-md cursor-pointer transition-all duration-300 hover:bg-gray-600/30 hover:text-white w-36"
                   onClick={() => openLogin()}
                 >
                   <LogIn className="w-4 h-4" />
-                  登录
+                  {t('nav_login')}
                 </button>
               )}
             </div>

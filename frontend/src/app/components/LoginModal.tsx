@@ -2,6 +2,7 @@
 
 import React from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useLanguage } from './LanguageContext';
 
 interface LoginModalProps {
   open: boolean;
@@ -17,7 +18,8 @@ export default function LoginModal({ open, onClose, onLogin, onCancel, error }: 
   const [sending, setSending] = React.useState(false);
   const [countdown, setCountdown] = React.useState(0);
   const [loggingIn, setLoggingIn] = React.useState(false);
-
+  const { t } = useLanguage();
+  
   React.useEffect(() => {
     if (countdown <= 0) return;
     const timer = setInterval(() => setCountdown((c) => c - 1), 1000);
@@ -58,9 +60,9 @@ export default function LoginModal({ open, onClose, onLogin, onCancel, error }: 
   return (
     <div className="fixed inset-0 bg-black bg-opacity-30 flex items-center justify-center z-50">
       <div className="bg-[#23232a] rounded-lg shadow-lg p-6 w-[360px] max-w-[92vw]">
-        <h2 className="text-base font-semibold mb-4 text-white">邮箱登录</h2>
+        <h2 className="text-base font-semibold mb-4 text-white">{t('login_email_title')}</h2>
 
-        <label className="block text-xs text-gray-300 mb-1">邮箱</label>
+        <label className="block text-xs text-gray-300 mb-1">{t('login_email')}</label>
           <input
             className="border border-gray-600 bg-[#2b2b32] rounded px-3 py-2 w-full mb-3 text-sm text-white placeholder:text-gray-400 focus:outline-none focus:border-white/40"
             // placeholder="请输入邮箱地址"
@@ -71,7 +73,7 @@ export default function LoginModal({ open, onClose, onLogin, onCancel, error }: 
             onChange={(e) => setEmail(e.target.value)}
           />
 
-        <label className="block text-xs text-gray-300 mb-1">验证码</label>
+        <label className="block text-xs text-gray-300 mb-1">{t('login_code')}</label>
         <div className="flex gap-2 mb-2">
           <input
             className="border border-gray-600 bg-[#2b2b32] rounded px-3 py-2 flex-1 text-sm text-white placeholder:text-gray-400 focus:outline-none focus:border-white/40"
@@ -86,7 +88,7 @@ export default function LoginModal({ open, onClose, onLogin, onCancel, error }: 
             onClick={handleSendCode}
             disabled={!canSendCode}
           >
-            {countdown > 0 ? `重新发送(${countdown}s)` : sending ? '发送中...' : '获取验证码'}
+            {countdown > 0 ? `${t('login_send_code_again')}(${countdown}s)` : sending ? `${t('login_sending')}` : `${t('login_send_code')}`}
           </button>
         </div>
 
@@ -106,7 +108,7 @@ export default function LoginModal({ open, onClose, onLogin, onCancel, error }: 
                 onCancel?.();
               }}
             >
-              取消
+              {t('login_cancel')}
             </button>
             <button
               className={`px-4 py-2 rounded text-white text-sm ${canLogin ? 'bg-blue-500 hover:bg-blue-600' : 'bg-blue-300 cursor-not-allowed'}`}
@@ -120,7 +122,7 @@ export default function LoginModal({ open, onClose, onLogin, onCancel, error }: 
                 }
               }}
               disabled={!canLogin}
-            >登录</button>
+            >{t('login_login')}</button>
           </div>
         </div>
       </div>

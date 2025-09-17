@@ -11,6 +11,7 @@ import EnhancedBackground from "../components/EnhancedBackground";
 // import FloatingElements from "../components/FloatingElements";
 import ModernInput from "../components/ModernInput";
 import { useAuth } from '@/app/components/AuthContext';
+import { useLanguage } from '@/app/components/LanguageContext';
 
 interface Provider {
   organization: string;
@@ -62,6 +63,7 @@ export default function AgentSpacePage() {
   const [hasSearched, setHasSearched] = useState(false);
   const [activeTab, setActiveTab] = useState<'recent' | 'search'>('recent');
   const { userId, openLogin, isLoading: authLoading } = useAuth();
+  const { t } = useLanguage();
 
   // 获取agent列表
   const fetchAgents = async () => {
@@ -73,14 +75,14 @@ export default function AgentSpacePage() {
       
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.text || '获取agent列表失败');
+        throw new Error(errorData.text || t('fetch_agents_error'));
       }
       
       const data = await response.json();
       setAgents(Array.isArray(data) ? data : [data]);
       
     } catch (err) {
-      setError(err instanceof Error ? err.message : '获取agent列表失败');
+      setError(err instanceof Error ? err.message : t('fetch_agents_error'));
     } finally {
       setLoading(false);
     }
@@ -130,14 +132,14 @@ export default function AgentSpacePage() {
 
       if (!response.ok) {
         const errorData = await response.json();
-        throw new Error(errorData.text || '搜索失败');
+        throw new Error(errorData.text || t('search_agents_error'));
       }
 
       const data = await response.json();
       setSearchResults(Array.isArray(data) ? data : [data]);
 
     } catch (err) {
-      setSearchError(err instanceof Error ? err.message : '搜索失败');
+      setSearchError(err instanceof Error ? err.message : t('search_agents_error'));
       setSearchResults([]);
     } finally {
       setSearchLoading(false);
@@ -177,7 +179,7 @@ export default function AgentSpacePage() {
             </h1> */}
             
             <div className="mixed-font text-lg font-semibold mb-0 text-gray-300 relative">
-              <span className="relative z-10">在此发现有趣的agent服务</span>
+              <span className="relative z-10">{t('discover_title')}</span>
             </div>
           </div>
         </div>
@@ -185,7 +187,7 @@ export default function AgentSpacePage() {
         {/* 搜索框区域 */}
         <div className="w-full max-w-8xl mx-auto px-4 mb-8">
           <ModernInput
-            placeholder="输入你的任务，获取最匹配的agent服务（Shift+Enter换行）"
+            placeholder={t('discover_placeholder')}
             value={searchTerm}
             onChange={setSearchTerm}
             onSubmit={handleSearch}
@@ -214,7 +216,7 @@ export default function AgentSpacePage() {
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
-                近期收录
+                {t('discover_recent')}
               </button>
               <button
                 onClick={() => setActiveTab('search')}
@@ -224,7 +226,7 @@ export default function AgentSpacePage() {
                     : 'text-gray-400 hover:text-white'
                 }`}
               >
-                搜索结果
+                {t('discover_search_results')}
                 {hasSearched && searchResults.length > 0 && (
                   <span className="ml-2 px-2 py-0.5 bg-white/20 rounded-full text-xs">
                     {searchResults.length}
@@ -247,7 +249,7 @@ export default function AgentSpacePage() {
               {loading && (
                 <div className="flex items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-                  <span className="ml-3 text-gray-300">加载中...</span>
+                  <span className="ml-3 text-gray-300">{t('loading')}</span>
                 </div>
               )}
               
@@ -259,7 +261,7 @@ export default function AgentSpacePage() {
                     onClick={fetchAgents}
                     className="px-4 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-lg transition-colors cursor-pointer"
                   >
-                    重试
+                    {t('retry')}
                   </button>
                 </div>
               )}
@@ -280,7 +282,7 @@ export default function AgentSpacePage() {
                       <button
                         onClick={() => handleStartChat(agent)}
                         className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-110"
-                        title="开启对话"
+                        title={t('discover_start_chat')}
                       >
                         <MessageCircle className="w-5 h-5 text-purple-400 hover:text-purple-300" />
                       </button>
@@ -306,21 +308,21 @@ export default function AgentSpacePage() {
                         </h3>
                         <p className="text-gray-300 text-sm mb-3">{agent.description}</p>
                         <div className="flex items-center gap-2 text-xs text-gray-400">
-                          <span>agent版本: {agent.version}</span>
+                          <span>agent version: {agent.version}</span>
                           <span>•</span>
-                          <span>A2A协议: {agent.protocolVersion}</span>
+                          <span>A2A version: {agent.protocolVersion}</span>
                         </div>
                       </div>
                       
                       {/* 能力信息 */}
                       <div className="mb-4">
-                        <div className="text-xs text-gray-400 mb-2">能力:</div>
+                        <div className="text-xs text-gray-400 mb-2">capabilities:</div>
                         <div className="flex flex-wrap gap-1">
                           {agent.capabilities.streaming && (
-                            <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">流式传输</span>
+                            <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">streaming</span>
                           )}
                           {agent.capabilities.pushNotifications && (
-                            <span className="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded">推送通知</span>
+                            <span className="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded">push notifications</span>
                           )}
                         </div>
                       </div>
@@ -348,14 +350,14 @@ export default function AgentSpacePage() {
                       {/* 技能信息 */}
                       {agent.skills && agent.skills.length > 0 && (
                         <div className="mb-4">
-                          <div className="text-xs text-gray-400 mb-2">技能:</div>
+                          <div className="text-xs text-gray-400 mb-2">skills:</div>
                           {agent.skills.map((skill, i) => (
                             <div key={i} className="mb-2 p-2 bg-gray-800/50 rounded">
                               <div className="text-sm font-medium text-white mb-1">{skill.name}</div>
                               <div className="text-xs text-gray-300 mb-1">{skill.description}</div>
                               {/* 输入输出模式 */}
                               <div className="mb-4">
-                                <div className="text-xs text-gray-400 mb-1">输入模式:</div>
+                                <div className="text-xs text-gray-400 mb-1">input modes:</div>
                                 <div className="flex flex-wrap gap-1 mb-2">
                                   {(skill.inputModes && skill.inputModes.length > 0 ? skill.inputModes : agent.defaultInputModes).map((mode: string, i: number) => (
                                     <span key={i} className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">
@@ -363,7 +365,7 @@ export default function AgentSpacePage() {
                                     </span>
                                   ))}
                                 </div>
-                                <div className="text-xs text-gray-400 mb-1">输出模式:</div>
+                                <div className="text-xs text-gray-400 mb-1">output modes:</div>
                                 <div className="flex flex-wrap gap-1">
                                   {(skill.outputModes && skill.outputModes.length > 0 ? skill.outputModes : agent.defaultOutputModes).map((mode: string, i: number) => (
                                     <span key={i} className="px-2 py-1 bg-orange-500/20 text-orange-400 text-xs rounded">
@@ -375,7 +377,7 @@ export default function AgentSpacePage() {
                               {skill.tags && skill.tags.length > 0 && (
                                 // <div className="flex flex-wrap gap-1 mb-4">
                                 <div className="mb-4">
-                                  <div className="text-xs text-gray-400 mb-1">标签:</div>
+                                  <div className="text-xs text-gray-400 mb-1">tags:</div>
                                   <div className="flex flex-wrap gap-1">
                                     {skill.tags.map((tag, j) => (
                                       <span key={j} className="px-1 py-0.5 bg-gray-600/50 text-gray-300 text-xs rounded">
@@ -387,7 +389,7 @@ export default function AgentSpacePage() {
                               )}
                               {skill.examples && skill.examples.length > 0 && (
                                 <div className="mb-4">
-                                  <div className="text-xs text-gray-400 mb-1">示例:</div>
+                                  <div className="text-xs text-gray-400 mb-1">examples:</div>
                                   <div className="flex flex-wrap gap-1">
                                     {skill.examples.map((example, j) => (
                                       <span key={j} className="px-1 py-0.5 bg-gray-600/50 text-gray-300 text-xs rounded">
@@ -409,7 +411,7 @@ export default function AgentSpacePage() {
               {/* 近期收录无数据 */}
               {!loading && !error && agents.length === 0 && (
                 <div className="text-center py-12">
-                  <div className="text-gray-400">暂无AI智能体服务</div>
+                  <div className="text-gray-400">{t('discover_no_agent')}</div>
                 </div>
               )}
             </div>
@@ -423,7 +425,7 @@ export default function AgentSpacePage() {
                 {/* <div className="w-16 h-0.5 bg-gradient-to-r from-green-500 to-emerald-500 mx-auto"></div> */}
                 {hasSearched && searchTerm && (
                   <div className="mt-3 text-sm text-gray-400">
-                    任务描述: &ldquo;{searchTerm}&rdquo;
+                    {t('discover_task_description')}: &ldquo;{searchTerm}&rdquo;
                   </div>
                 )}
               </div>
@@ -432,7 +434,7 @@ export default function AgentSpacePage() {
               {searchLoading && (
                 <div className="flex items-center justify-center py-12">
                   <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-500"></div>
-                  <span className="ml-3 text-gray-300">搜索中...</span>
+                  <span className="ml-3 text-gray-300">{t('discover_searching')}</span>
                 </div>
               )}
               
@@ -444,7 +446,7 @@ export default function AgentSpacePage() {
                     onClick={() => handleSearch(searchTerm)}
                     className="px-4 py-2 bg-green-500 hover:bg-green-600 text-white rounded-lg transition-colors"
                   >
-                    重试搜索
+                    {t('retry')}
                   </button>
                 </div>
               )}
@@ -473,7 +475,7 @@ export default function AgentSpacePage() {
                       <button
                         onClick={() => handleStartChat(agent)}
                         className="absolute top-4 right-4 w-8 h-8 flex items-center justify-center transition-all duration-200 cursor-pointer hover:scale-110"
-                        title="开启对话"
+                        title={t('discover_start_chat')}
                       >
                         <MessageCircle className="w-5 h-5 text-purple-400 hover:text-purple-300" />
                       </button>
@@ -499,21 +501,21 @@ export default function AgentSpacePage() {
                         </h3>
                         <p className="text-gray-300 text-sm mb-3">{agent.description}</p>
                         <div className="flex items-center gap-2 text-xs text-gray-400">
-                          <span>agent版本: {agent.version}</span>
+                          <span>agent version: {agent.version}</span>
                           <span>•</span>
-                          <span>A2A协议: {agent.protocolVersion}</span>
+                          <span>A2A version: {agent.protocolVersion}</span>
                         </div>
                       </div>
                       
                       {/* 能力信息 */}
                       <div className="mb-4">
-                        <div className="text-xs text-gray-400 mb-2">能力:</div>
+                        <div className="text-xs text-gray-400 mb-2">capabilities:</div>
                         <div className="flex flex-wrap gap-1">
                           {agent.capabilities.streaming && (
-                            <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">流式传输</span>
+                            <span className="px-2 py-1 bg-green-500/20 text-green-400 text-xs rounded">streaming</span>
                           )}
                           {agent.capabilities.pushNotifications && (
-                            <span className="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded">推送通知</span>
+                            <span className="px-2 py-1 bg-purple-500/20 text-purple-400 text-xs rounded">push notifications</span>
                           )}
                         </div>
                       </div>
@@ -541,14 +543,14 @@ export default function AgentSpacePage() {
                       {/* 技能信息 */}
                       {agent.skills && agent.skills.length > 0 && (
                         <div className="mb-4">
-                          <div className="text-xs text-gray-400 mb-2">技能:</div>
+                          <div className="text-xs text-gray-400 mb-2">skills:</div>
                           {agent.skills.map((skill, i) => (
                             <div key={i} className="mb-2 p-2 bg-gray-800/50 rounded">
                               <div className="text-sm font-medium text-white mb-1">{skill.name}</div>
                               <div className="text-xs text-gray-300 mb-1">{skill.description}</div>
                               {/* 输入输出模式 */}
                               <div className="mb-4">
-                                <div className="text-xs text-gray-400 mb-1">输入模式:</div>
+                                <div className="text-xs text-gray-400 mb-1">input modes:</div>
                                 <div className="flex flex-wrap gap-1 mb-2">
                                   {(skill.inputModes && skill.inputModes.length > 0 ? skill.inputModes : agent.defaultInputModes).map((mode: string, i: number) => (
                                     <span key={i} className="px-2 py-1 bg-blue-500/20 text-blue-400 text-xs rounded">
@@ -556,7 +558,7 @@ export default function AgentSpacePage() {
                                     </span>
                                   ))}
                                 </div>
-                                <div className="text-xs text-gray-400 mb-1">输出模式:</div>
+                                <div className="text-xs text-gray-400 mb-1">output modes:</div>
                                 <div className="flex flex-wrap gap-1">
                                   {(skill.outputModes && skill.outputModes.length > 0 ? skill.outputModes : agent.defaultOutputModes).map((mode: string, i: number) => (
                                     <span key={i} className="px-2 py-1 bg-orange-500/20 text-orange-400 text-xs rounded">
@@ -568,7 +570,7 @@ export default function AgentSpacePage() {
                               {skill.tags && skill.tags.length > 0 && (
                                 // <div className="flex flex-wrap gap-1 mb-4">
                                 <div className="mb-4">
-                                  <div className="text-xs text-gray-400 mb-1">标签:</div>
+                                  <div className="text-xs text-gray-400 mb-1">tags:</div>
                                   <div className="flex flex-wrap gap-1">
                                     {skill.tags.map((tag, j) => (
                                       <span key={j} className="px-1 py-0.5 bg-gray-600/50 text-gray-300 text-xs rounded">
@@ -580,7 +582,7 @@ export default function AgentSpacePage() {
                               )}
                               {skill.examples && skill.examples.length > 0 && (
                                 <div className="mb-4">
-                                  <div className="text-xs text-gray-400 mb-1">示例:</div>
+                                  <div className="text-xs text-gray-400 mb-1">examples:</div>
                                   <div className="flex flex-wrap gap-1">
                                     {skill.examples.map((example, j) => (
                                       <span key={j} className="px-1 py-0.5 bg-gray-600/50 text-gray-300 text-xs rounded">
@@ -602,8 +604,8 @@ export default function AgentSpacePage() {
               {/* 搜索无结果 */}
               {!searchLoading && !searchError && hasSearched && searchResults.length === 0 && (
                 <div className="text-center py-12">
-                  <div className="text-gray-400 mb-4">未找到相关的AI智能体服务</div>
-                  <div className="text-sm text-gray-500">尝试调整搜索任务描述或浏览近期收录的服务</div>
+                  <div className="text-gray-400 mb-4">{t('discover_no_result')}</div>
+                  <div className="text-sm text-gray-500">{t('discover_try_adjust')}</div>
                   <button 
                     onClick={() => {
                       setSearchTerm('');
@@ -613,7 +615,7 @@ export default function AgentSpacePage() {
                     }}
                     className="mt-4 px-4 py-2 bg-gray-600 hover:bg-gray-700 text-white rounded-lg transition-colors"
                   >
-                    浏览近期收录
+                    {t('discover_recent_browse')}
                   </button>
                 </div>
               )}
@@ -621,7 +623,7 @@ export default function AgentSpacePage() {
               {/* 未进行搜索时的提示 */}
               {!hasSearched && (
                 <div className="text-center py-12">
-                  <div className="text-gray-400 mb-4">请在搜索框中描述你的任务开始搜索</div>
+                  <div className="text-gray-400 mb-4">{t('discover_please_search')}</div>
                   {/* <div className="text-sm text-gray-500">描述你的需求，我们会为你找到合适的AI智能体</div> */}
                 </div>
               )}

@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "./globals.css";
 import { SidebarProvider } from "./components/SidebarContext";
 import { AuthProvider } from "./components/AuthContext";
+import { LanguageProvider } from "./components/LanguageContext";
 // import Head from 'next/head';
 
 const inter = Inter({ subsets: ["latin"] });
@@ -20,20 +21,22 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="zh">
+    <html lang="en">
       <head>
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {/* <link rel="icon" href="favicon.png" type="image/png" /> */}
         <link rel="icon" href="/yu_logo.jpg" type="image/jpeg" />
       </head>
       <body className={inter.className}>
-        <AuthProvider>
-          <SidebarProvider>
-            <Suspense fallback={null}>
-              {children}
-            </Suspense>
-          </SidebarProvider>
-        </AuthProvider>
+        <LanguageProvider>
+          <AuthProvider>
+            <SidebarProvider>
+              <Suspense fallback={null}>
+                {children}
+              </Suspense>
+            </SidebarProvider>
+          </AuthProvider>
+        </LanguageProvider>
       </body>
     </html>
   );

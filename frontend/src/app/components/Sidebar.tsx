@@ -1,6 +1,7 @@
 import React from 'react';
 import { MessageCirclePlus, PanelLeft } from 'lucide-react';
 import { useSidebar } from './SidebarContext';
+import { useLanguage } from './LanguageContext';
 
 export interface ChatItem {
   thread_id: string;
@@ -15,7 +16,8 @@ interface SidebarProps {
 
 export default function Sidebar({ onNewChat, onSelectChat, currentThreadId }: SidebarProps) {
   const { collapsed, setCollapsed, chats } = useSidebar();
-
+  const { t } = useLanguage();
+  
   return (
     <aside
       className={`bg-[#23232a] text-white border-r border-gray-800 h-full transition-all duration-300 flex flex-col overflow-hidden flex-shrink-0 ${collapsed ? 'w-16' : 'w-64'}`}
@@ -25,14 +27,14 @@ export default function Sidebar({ onNewChat, onSelectChat, currentThreadId }: Si
         <button
           className="text-white hover:bg-[#23233a] hover:text-blue-500 rounded-full p-2 flex items-center justify-center cursor-pointer transition-colors"
           onClick={() => setCollapsed(!collapsed)}
-          title={collapsed ? '展开侧边栏' : '收起侧边栏'}
+          title={collapsed ? t('sidebar_expand_sidebar') : t('sidebar_collapse_sidebar')}
         >
           <PanelLeft className="h-5 w-5" />
         </button>
         <button
           className="text-white hover:bg-[#23233a] hover:text-blue-500 rounded-full p-1 flex items-center justify-center cursor-pointer transition-colors"
           onClick={onNewChat}
-          title="新建会话"
+          title={t('sidebar_new_chat')}
         >
           <MessageCirclePlus className="h-5 w-5" />
         </button>

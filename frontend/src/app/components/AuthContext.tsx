@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useEffect, useMemo, useState } from "react";
 import LoginModal from "./LoginModal";
 import { v4 as uuidv4 } from "uuid";
+import { useLanguage } from "./LanguageContext";
 
 interface AuthContextType {
   userId: string | null;
@@ -23,6 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loginError, setLoginError] = useState<string | undefined>(undefined);
   const [onLoginSuccessCallback, setOnLoginSuccessCallback] = useState<(() => void) | undefined>(undefined);
   const [onLoginCancelCallback, setOnLoginCancelCallback] = useState<(() => void) | undefined>(undefined);
+  const { t } = useLanguage();
 
   useEffect(() => {
     try {
@@ -83,7 +85,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
             if (response.status === 200) {
               const verify_succeed = data?.verify_succeed;
               if (!verify_succeed) {
-                setLoginError(data?.text || '验证失败，请稍后重试');
+                setLoginError(data?.text || t('auth_verify_failed'));
                 return;
               }
               const newUserId = data?.user_id;
@@ -95,11 +97,11 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
               }
             } else {
               // 显示验证失败的错误信息
-              setLoginError(data?.text || '验证失败，请稍后重试');
+              setLoginError(data?.text || t('auth_verify_failed'));
             }
           } catch {
             // 网络错误处理
-            setLoginError('网络错误，请稍后重试');
+            setLoginError(t('network_error'));
           }
         }}
       />

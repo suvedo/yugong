@@ -2,15 +2,7 @@
 
 import React, { useMemo, useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-
-const SUGGESTIONS = [
-  "世界无法继续改变，除非加入一点点疯狂",
-  "在这个时代，最大的冒险就是不冒险",
-  "什么是疯子？\n就是重复做同样的事情，还期待有不同的结果",
-  "未来已经在这里，只是没有平均分布",
-  "勇敢的人先享受世界",
-  "预测未来最好的办法就是把它创造出来"
-];
+import { useLanguage } from '@/app/components/LanguageContext';
 
 const DEFAULT_POSITIONS = [
   { left: 15, top: 25 },
@@ -53,29 +45,33 @@ function generateNonOverlappingPositions(suggestions: string[]): Array<{left: nu
 
 export default function FloatingElements() {
   const [isClient, setIsClient] = useState(false);
+  const { language, t } = useLanguage();
+
+  const suggestions = useMemo(() => [
+    t('floating_title1'),
+    t('floating_title2'),
+    t('floating_title3'),
+    t('floating_title4'),
+    t('floating_title5'),
+    t('floating_title6'),
+  ], [language, t]);
 
   useEffect(() => {
     setIsClient(true);
   }, []);
 
-
-
-
-
   // 使用固定位置作为服务器端默认值
-  // 使用模块级常量 DEFAULT_POSITIONS
-
   const positions = useMemo(() => {
     if (!isClient) {
       return DEFAULT_POSITIONS;
     }
-    return generateNonOverlappingPositions(SUGGESTIONS);
-  }, [isClient]);
+    return generateNonOverlappingPositions(suggestions);
+  }, [isClient, suggestions]);
 
   return (
     <div className="absolute inset-0 pointer-events-none overflow-hidden">
       {/* Floating suggestion tags */}
-      {SUGGESTIONS.map((suggestion: string, index: number) => (
+      {suggestions.map((suggestion: string, index: number) => (
         <motion.div
           key={index}
           className="absolute  px-4 py-2 text-sm text-gray-300"

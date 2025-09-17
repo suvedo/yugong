@@ -9,6 +9,7 @@ import Sidebar from '@/app/components/Sidebar';
 import ChatArea, { Message } from '@/app/components/ChatArea';
 import { useSidebar } from '@/app/components/SidebarContext';
 import { useAuth } from '@/app/components/AuthContext';
+import { useLanguage } from '@/app/components/LanguageContext';
 
 interface FetchDataProps {
   role?: 'user' | 'assistant';
@@ -28,6 +29,7 @@ export default function ChatPage() {
   const threadId = params.thread_id as string;
   const agentName = decodeURIComponent(searchParams.get('agentName') || '');
   const agentOrganization = decodeURIComponent(searchParams.get('agentOrganization') || '');
+  const { t } = useLanguage();
   
   // 使用Context中的侧边栏状态
   const { updateChats } = useSidebar();
@@ -238,7 +240,7 @@ export default function ChatPage() {
       console.error('WebSocket 错误:', error);
       setIsRunning(false);
       wsRef.current = null;
-      setMessages(prev => [...prev, { role: 'assistant', content: '<span style="color: red;">应答失败，请稍后再试</span><br>' }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: '<span style="color: red;">' + t('fail_retry') + '</span><br>' }]);
     };
 
     ws.onclose = (event) => {

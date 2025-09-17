@@ -8,6 +8,7 @@ import StarlitBackground from "@/app/components/StarlitBackground";
 import FloatingElements from "@/app/components/FloatingElements";
 import ModernInput from "@/app/components/ModernInput";
 import { useAuth } from '@/app/components/AuthContext';
+import { useLanguage } from '@/app/components/LanguageContext';
 
 export default function HomePage() {
 
@@ -18,6 +19,7 @@ export default function HomePage() {
   // 注册结果消息
   const [message, setMessage] = useState<{text: string, type: 'success' | 'error'} | null>(null);
   const { userId, openLogin, isLoading: authLoading } = useAuth();
+  const { t } = useLanguage();
 
   // 生成request_id
   const generateRequestId = () => {
@@ -63,13 +65,13 @@ export default function HomePage() {
 
       if (!response.ok) {
         const data = await response.json();
-        setMessage({ text: '注册失败：' + data.text, type: 'error' });
+        setMessage({ text: t('share_error') + '：' + data.text, type: 'error' });
       } else {
-        setMessage({ text: '注册成功，请在‘我的agent’中查看', type: 'success' });
+        setMessage({ text: t('share_success'), type: 'success' });
       }
     } catch {
       // 显示失败消息
-      setMessage({ text: '注册失败', type: 'error' });
+      setMessage({ text: t('share_error'), type: 'error' });
     } finally {
       setIsLoading(false);
     }
@@ -106,7 +108,7 @@ export default function HomePage() {
               </h1> */}
               
               <div className="mixed-font text-lg font-semibold mb-6 text-gray-300 relative">
-                <span className="relative z-10">在此分享你的agent服务</span>
+                <span className="relative z-10">{t('share_title')}</span>
               </div>
             </div>
           </div>
@@ -114,7 +116,7 @@ export default function HomePage() {
           {/* 输入框区域 */}
           <div className="w-full max-w-2xl mx-auto px-4 mb-20 relative">
             <ModernInput
-              placeholder="输入A2A服务的URL以注册"
+              placeholder={t('share_placeholder')}
               value={a2aServerUrl}
               onChange={setA2aServerUrl}
               onSubmit={handleSubmit}

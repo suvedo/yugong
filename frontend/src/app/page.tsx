@@ -9,6 +9,7 @@ import Sidebar from '@/app/components/Sidebar';
 import ChatArea, { Message } from '@/app/components/ChatArea';
 import { useSidebar } from '@/app/components/SidebarContext';
 import { useAuth } from '@/app/components/AuthContext';
+import { useLanguage } from '@/app/components/LanguageContext';
 
 // const mockChats: ChatItem[] = [
 //   { id: uuidv4(), title: '和AI助手的对话' },
@@ -270,7 +271,7 @@ function HomeContent() {
       console.error('WebSocket 错误:', error);
       setIsRunning(false);
       wsRef.current = null;
-      setMessages(prev => [...prev, { role: 'assistant', content: '<span style="color: red;">应答失败，请稍后再试</span><br>' }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: '<span style="color: red;">' + t('fail_retry') + '</span><br>' }]);
     };
 
     ws.onclose = (event) => {
@@ -408,11 +409,12 @@ function HomeContent() {
 }
 
 export default function Home() {
+  const { t } = useLanguage();
   return (
     <Suspense fallback={
       <div className="h-screen bg-[#18181c] text-white flex items-center justify-center">
         <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-500"></div>
-        <span className="ml-3">加载中...</span>
+        <span className="ml-3">{t('loading')}</span>
       </div>
     }>
       <HomeContent />

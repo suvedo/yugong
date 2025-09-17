@@ -3,6 +3,7 @@ import { ArrowUp, Plus, Loader2, X, StopCircle } from 'lucide-react';
 import { v4 as uuidv4 } from 'uuid';
 import Image from 'next/image';
 import { useAuth } from '@/app/components/AuthContext';
+import { useLanguage } from '@/app/components/LanguageContext';
 
 export interface Message {
   role: 'user' | 'assistant';
@@ -27,6 +28,7 @@ interface ChatAreaProps {
 }
 
 const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaProps>(({ messages, onSend, agentName: initialAgentName, agentOrganization: initialAgentOrganization, isRunning = false, isCancelling = false, onCancelRun, isLoading = false, onLoginCancel }, ref) => {
+  const { t } = useLanguage();
   const [input, setInput] = React.useState('');
   const [fileIds, setFileIds] = React.useState<string[]>([]);
   const [fileNames, setFileNames] = React.useState<string[]>([]);
@@ -190,7 +192,7 @@ const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaPro
       if (lastAtIndex !== -1 && !value.includes(`@${agentDisplay}`)) {
         // 只要不是原有的@mention，且有@，就弹提示
         getCursorPosition();
-        setTipMessage('目前支持最多指定一个agent');
+        setTipMessage(t('chat_single_agent_tip'));
         setShowSingleMentionTip(true);
         setTipPosition(cursorPosition);
         setTimeout(() => setShowSingleMentionTip(false), 3000);
@@ -626,12 +628,12 @@ const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaPro
             <div className="flex items-center justify-center py-8">
               <div className="flex flex-col items-center space-y-4">
                 <Loader2 className="w-8 h-8 text-white-500 animate-spin" />
-                <span className="text-gray-400 text-sm">加载中...</span>
+                <span className="text-gray-400 text-sm">{t('chat_loading')}</span>
               </div>
             </div>
           ) : !isLoading && messages.length === 0 ? (
             <div className="p-3 rounded-lg bg-[#23232a] self-start text-white">
-              hi，我是愚公，在此开启你的智能探索
+              {t('chat_welcome')}
               {/* {currentAgentName ? (
                 <div>
                   <div className="mb-2">
@@ -764,7 +766,7 @@ const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaPro
               <textarea
                 ref={textareaRef}
                 className="w-full bg-transparent border-none outline-none text-white placeholder:text-gray-400 text-sm resize-none leading-5 min-h-[px]"
-                placeholder={!getDisplayValue() ? "自“愚”一下，生活更美好" : ""}
+                placeholder={!getDisplayValue() ? t('chat_placeholder') : ""}
                 value={getDisplayValue()}
                 onChange={(e) => handleInputChange(e.target.value)}
                 onCompositionStart={() => setIsComposing(true)}
@@ -775,12 +777,12 @@ const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaPro
                     if (isRunning) {
                       // 当前存在运行的任务，显示提示
                       getCursorPosition();
-                      setTipMessage('当前存在运行的任务');
+                      setTipMessage(t('chat_task_running'));
                       setShowSingleMentionTip(true);
                       setTipPosition(cursorPosition);
                       setTimeout(() => setShowSingleMentionTip(false), 5000);
                     } else if (uploading) {
-                      setUploadError('文件上传中，请稍后再试');
+                      setUploadError(t('chat_uploading_wait'));
                     } else {
                       handleSend(); 
                     }
@@ -823,7 +825,7 @@ const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaPro
                   } else if (e.key === '@' && currentAgentName) {
                     // 新增：键盘输入@时也弹提示
                     getCursorPosition();
-                    setTipMessage('目前支持最多指定一个agent');
+                    setTipMessage(t('chat_single_agent_tip'));
                     setShowSingleMentionTip(true);
                     setTipPosition(cursorPosition);
                     setTimeout(() => setShowSingleMentionTip(false), 3000);
@@ -931,8 +933,8 @@ const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaPro
                   ${fileNames.length >= 5 || uploading ? 'cursor-not-allowed opacity-60' : 'cursor-pointer hover:bg-blue-600'}`}
                 title={
                   fileNames.length >= 5
-                    ? '目前最多支持5个文件'
-                    : '点击上传图片与文件'
+                    ? t('chat_upload_title_disabled')
+                    : t('chat_upload_title')
                 }
               >
                 <input
@@ -975,7 +977,7 @@ const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaPro
                   }
                 }}
                 disabled={isCancelling || (!isRunning && (!input.trim() || uploading))}
-                title={isCancelling ? '已取消，请稍候' : isRunning ? '正在运行，点击取消' : '发送消息'}
+                title={isCancelling ? t('chat_cancelled_title') : isRunning ? t('chat_running_title') : t('chat_send_title')}
               >
                 {isCancelling || isRunning ? <StopCircle className="w-5 h-5" /> : <ArrowUp className="w-5 h-5" />}
               </button>
@@ -1000,12 +1002,12 @@ const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaPro
               {isSearchingAgents ? (
                 <div className="p-6 text-center text-gray-400">
                   <Loader2 className="w-5 h-5 animate-spin mx-auto mb-3" />
-                  <span className="text-sm">推荐中...</span>
+                  <span className="text-sm">{t('chat_recommending')}</span>
                 </div>
               ) : searchResults.length === 0 ? (
                 <div className="p-6 text-center text-gray-400">
                   <span className="text-sm">
-                    {searchPrefix ? `未找到匹配 "${searchPrefix}" 的Agent` : '输入@开始搜索Agent'}
+                    {searchPrefix ? `${t('chat_no_match_prefix')} "${searchPrefix}" ${t('chat_agent_label')}` : t('chat_input_at_to_search')}
                   </span>
                 </div>
               ) : (
@@ -1041,6 +1043,7 @@ const ChatArea = React.forwardRef<{ handleLoginCancel: () => void }, ChatAreaPro
 });
 
 const FilePreviewList = React.memo(({ fileIds }: { fileIds: string[] }) => {
+  const { t } = useLanguage();
   const [fileTypes, setFileTypes] = React.useState<(string | null)[]>(Array(fileIds.length).fill(null));
   const [loading, setLoading] = React.useState<boolean[]>(Array(fileIds.length).fill(true));
   // 图片预览状态
@@ -1118,7 +1121,7 @@ const FilePreviewList = React.memo(({ fileIds }: { fileIds: string[] }) => {
               >
                 <div className="flex items-center justify-center">
                   <Loader2 className="w-8 h-8 text-gray-300 animate-spin" />
-                  <span className="ml-2 text-gray-400 text-sm">检测文件类型中...</span>
+                  <span className="ml-2 text-gray-400 text-sm">{t('chat_detecting_file_type')}</span>
                 </div>
               </div>
             );
@@ -1139,7 +1142,7 @@ const FilePreviewList = React.memo(({ fileIds }: { fileIds: string[] }) => {
                 )}
                 <Image
                   src={url}
-                  alt="图片"
+                  alt={t('chat_image_alt')}
                   className="max-w-[360px] max-h-[360px] object-contain cursor-pointer"
                   style={loading[idx] ? { visibility: 'hidden' } : {}}
                   onLoad={() => handleLoaded(idx)}
@@ -1239,10 +1242,10 @@ const FilePreviewList = React.memo(({ fileIds }: { fileIds: string[] }) => {
                   </div>
                   <div className="flex-1 text-left">
                     <div className="text-white text-sm font-medium truncate">
-                      {type.split('/')[1]?.toUpperCase() || '文件'}
+                      {type.split('/')[1]?.toUpperCase() || t('chat_file_label')}
                     </div>
                     <div className="text-gray-400 text-xs">
-                      点击下载
+                      {t('chat_click_to_download')}
                     </div>
                   </div>
                 </div>
